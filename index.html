@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>David · three.js</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #111; overflow: hidden; }
+      canvas { display: block; }
+      #status {
+        position: fixed; inset: 0; display: grid; place-items: center;
+        color: #aaa; font: 14px system-ui, sans-serif; pointer-events: none;
+      }
+      #credit {
+        position: fixed; left: 12px; bottom: 10px; color: #777;
+        font: 12px system-ui, sans-serif;
+        padding: 4px 8px; border-radius: 4px; background: rgba(17, 17, 17, 0.8);
+      }
+      #credit a { color: #999; }
+    </style>
+  </head>
+  <body>
+    <div id="status">Cargando modelo…</div>
+    <div id="credit">
+      "<a href="https://sketchfab.com/3d-models/david-statue-3d-model-free-fa01a0cf020943549f1c34ebbd598488" target="_blank" rel="noopener">David Statue 3D Model FREE</a>"
+      por <a href="https://sketchfab.com/MohammadRajabloo" target="_blank" rel="noopener">Mohammad Rajabloo</a>,
+      <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
