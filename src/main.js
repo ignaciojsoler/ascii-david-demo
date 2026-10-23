@@ -26,7 +26,7 @@ controls.enableDamping = true;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.6;
 
-// Iluminación tipo museo: luz cálida desde arriba a un lado y relleno frío.
+// Museum-style lighting: warm key light from above to one side, cool rim fill.
 scene.add(new THREE.HemisphereLight(0xffffff, 0x222222, 0.6));
 const key = new THREE.DirectionalLight(0xfff1e0, 2.5);
 key.position.set(2, 4, 3);
@@ -35,8 +35,8 @@ const rim = new THREE.DirectionalLight(0xbfd4ff, 1.0);
 rim.position.set(-3, 2, -2);
 scene.add(rim);
 
-// Render → tone mapping/sRGB → ASCII. El ASCII va último para trabajar
-// sobre los colores finales de pantalla.
+// Render → tone mapping/sRGB → ASCII. ASCII runs last so it works on the
+// final on-screen colors.
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 composer.addPass(new OutputPass());
@@ -53,12 +53,12 @@ function updateResolution() {
 updateResolution();
 
 const gui = new GUI({ title: 'ASCII' });
-gui.add(ascii, 'enabled').name('activo (A)').listen();
-gui.add(settings, 'cellSize', 4, 24, 1).name('tamaño celda').onChange(updateResolution);
-gui.add(ascii.uniforms.contrast, 'value', 0.5, 3, 0.05).name('contraste');
-gui.add(ascii.uniforms.brightness, 'value', -0.5, 0.5, 0.01).name('brillo');
+gui.add(ascii, 'enabled').name('enabled (A)').listen();
+gui.add(settings, 'cellSize', 4, 24, 1).name('cell size').onChange(updateResolution);
+gui.add(ascii.uniforms.contrast, 'value', 0.5, 3, 0.05).name('contrast');
+gui.add(ascii.uniforms.brightness, 'value', -0.5, 0.5, 0.01).name('brightness');
 gui.add(ascii.uniforms.colored, 'value').name('color');
-gui.add(controls, 'autoRotate').name('rotar');
+gui.add(controls, 'autoRotate').name('auto-rotate');
 if (window.innerWidth < 600) gui.close();
 
 window.addEventListener('keydown', (e) => {
@@ -73,7 +73,7 @@ loader.load(
   (gltf) => {
     const model = gltf.scene;
 
-    // Material estándar tono mármol para que reaccione a las luces.
+    // Marble-toned standard material so the model reacts to the lights.
     model.traverse((obj) => {
       if (!obj.isMesh) return;
       const old = obj.material;
@@ -88,7 +88,7 @@ loader.load(
       obj.geometry.computeVertexNormals();
     });
 
-    // Normalizar: altura 2 unidades, base en y=0, centrado en x/z.
+    // Normalize: 2 units tall, base at y=0, centered on x/z.
     const box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3());
     model.scale.multiplyScalar(2 / size.y);
@@ -104,11 +104,11 @@ loader.load(
     status.remove();
   },
   (e) => {
-    if (e.total) status.textContent = `Cargando modelo… ${Math.round((e.loaded / e.total) * 100)}%`;
+    if (e.total) status.textContent = `Loading model… ${Math.round((e.loaded / e.total) * 100)}%`;
   },
   (err) => {
     console.error(err);
-    status.textContent = 'Error al cargar el modelo';
+    status.textContent = 'Failed to load model';
   },
 );
 

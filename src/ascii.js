@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 
-// Caracteres ordenados de menos a más "tinta".
+// Characters ordered from least to most "ink".
 export const DEFAULT_CHARS = ' .:-=+*#%@';
 
-// Dibuja los caracteres en una tira horizontal (un cuadrado por carácter)
-// que el shader usa como atlas de glifos.
+// Draws the characters into a horizontal strip (one square per character)
+// that the shader uses as a glyph atlas.
 function createGlyphAtlas(chars, size = 64) {
   const canvas = document.createElement('canvas');
   canvas.width = size * chars.length;
@@ -25,8 +25,8 @@ function createGlyphAtlas(chars, size = 64) {
   return texture;
 }
 
-// Los colores se usan tal cual en espacio de pantalla (sRGB), porque el pass
-// corre después del OutputPass.
+// Colors are used as-is in display (sRGB) space, because this pass runs
+// after the OutputPass.
 const srgb = (hex) => new THREE.Color().setHex(hex, THREE.LinearSRGBColorSpace);
 
 const AsciiShader = {
@@ -67,7 +67,7 @@ const AsciiShader = {
       vec2 cell = floor(pixel / cellSize);
       vec2 inCell = fract(pixel / cellSize);
 
-      // Un solo color por celda, muestreado en su centro.
+      // One color per cell, sampled at its center.
       vec3 color = texture2D(tDiffuse, (cell + 0.5) * cellSize / resolution).rgb;
       float lum = dot(color, vec3(0.299, 0.587, 0.114));
       lum = clamp((lum - 0.5) * contrast + 0.5 + brightness, 0.0, 0.9999);
